@@ -39,7 +39,21 @@
         // Extract coordinates
         const coords = data.features[0].geometry.coordinates;
         coords.forEach(coord => {
-          const marker = L.marker([coord[1], coord[0]]);
+          const lat = coord[1];
+          const lng = coord[0];
+
+          const marker = L.marker([lat, lng]);
+
+          // On click, fetch reverse geocode and show popup
+          marker.on("click", async () => {
+            const location = await reverseGeocode(lat, lng);
+            marker.bindPopup(
+              `<b>Taxi Location</b><br>
+               🌐 Coordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}<br>
+               📍 Place: ${location}`
+            ).openPopup();
+          });
+
           markers.addLayer(marker);
         });
 
@@ -55,5 +69,4 @@
 
     // Load data initially and refresh every minute
     loadTaxiData();
-    setInterval(loadTaxiData, 60000);
- 
+    setInterval(loadTaxiData, 60000); 
