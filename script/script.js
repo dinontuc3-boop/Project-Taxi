@@ -33,10 +33,10 @@
         const response = await fetch('https://api.data.gov.sg/v1/transport/taxi-availability');
         const data = await response.json();
 
-        // Clear old markers
+    // Clear old markers
         markers.clearLayers();
 
-        // Extract coordinates
+    // Extract coordinates
         const coords = data.features[0].geometry.coordinates;
         coords.forEach(coord => {
           const lat = coord[1];
@@ -57,7 +57,7 @@
           markers.addLayer(marker);
         });
 
-        // Update info display
+    // Update info display
         const taxiCount = data.features[0].properties.taxi_count;
         const timestamp = new Date(data.features[0].properties.timestamp).toLocaleString('en-SG');
         infoDiv.textContent = `Available taxis: ${taxiCount} | Last update: ${timestamp}`;
